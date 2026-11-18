@@ -183,7 +183,34 @@
   </style>
 </head>
 <body>
+<div id="student-gate" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#f8f9fa;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:sans-serif;text-align:center;padding:20px;">
+    <h2 id="gate-title">IGCSE ICT Lesson</h2>
+    <p>Please enter your full name to view this lesson:</p>
+    <input type="text" id="studentNameInput" placeholder="e.g., Maung Maung" style="padding:10px;font-size:16px;margin-bottom:10px;width:250px;border:1px solid #ccc;border-radius:4px;">
+    <button onclick="submitName()" style="padding:10px 20px;font-size:16px;background:#217346;color:white;border:none;border-radius:4px;cursor:pointer;">Enter Lesson</button>
+  </div>
 
+  <script>
+    document.getElementById("gate-title").innerText = document.title;
+    var savedName = localStorage.getItem("savedStudentName");
+    if (savedName) { document.getElementById("studentNameInput").value = savedName; }
+    var pageKey = "unlocked_" + window.location.pathname;
+    if (localStorage.getItem(pageKey) === "true") { document.getElementById("student-gate").style.display = "none"; }
+
+    function submitName() {
+      var name = document.getElementById("studentNameInput").value.trim();
+      if (!name) { alert("Please enter your name."); return; }
+      fetch("https://script.google.com/macros/s/AKfycbxp3CRUUX31mvjRZtPLgu6nKnD-6NwdsP3w_2B5BL_qaXTeB9Dns-rxE98WbLRSJuny/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "studentName=" + encodeURIComponent(name) + "&chapter=" + encodeURIComponent(document.title)
+      });
+      localStorage.setItem("savedStudentName", name);
+      localStorage.setItem(pageKey, "true");
+      document.getElementById("student-gate").style.display = "none";
+    }
+  </script>
   <div class="container">
     <header>
       <h1>Chapter 20: Spreadsheets (Excel) — Theory Paper Prep</h1>
