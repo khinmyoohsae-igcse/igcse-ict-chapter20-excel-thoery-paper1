@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 20: Spreadsheets (Excel) for Theory Paper - 60 Interactive MCQs</title>
+  <style>
+    :root {
+      --bg-color: #f4f7f6;
+      --card-bg: #ffffff;
+      --text-color: #2c3e50;
+      --primary-color: #217346;
+      --secondary-color: #8e44ad;
+      --border-color: #e0e0e0;
+      --correct-bg: #d4edda;
+      --correct-border: #28a745;
+      --correct-text: #155724;
+      --incorrect-bg: #f8d7da;
+      --incorrect-border: #dc3545;
+      --incorrect-text: #721c24;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
+      text-align: center;
+      position: sticky;
+      top: 10px;
+      z-index: 100;
+      border-top: 4px solid var(--primary-color);
+    }
+
+    h1 {
+      margin: 0 0 8px 0;
+      color: #1a252f;
+      font-size: 1.65em;
+    }
+
+    p.subtitle {
+      margin: 0 0 15px 0;
+      color: #7f8c8d;
+      font-size: 0.95em;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .score-board {
+      font-size: 1.1em;
+      font-weight: bold;
+      color: var(--primary-color);
+      background: #e8f5e9;
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 1px solid #a5d6a7;
+    }
+
+    .btn-action {
+      background-color: var(--secondary-color);
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      font-size: 0.95em;
+      font-weight: 600;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.1s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+
+    .btn-action:hover {
+      background-color: #732d91;
+    }
+
+    .btn-action:active {
+      transform: scale(0.97);
+    }
+
+    .btn-reset {
+      background-color: #e67e22;
+    }
+
+    .btn-reset:hover {
+      background-color: #d35400;
+    }
+
+    .mcq-card {
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      border: 1px solid var(--border-color);
+    }
+
+    .question-title {
+      font-size: 1.05em;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    .code-snippet {
+      font-family: 'Consolas', 'Courier New', monospace;
+      background-color: #f1f3f5;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #c7254e;
+      font-weight: bold;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .option-btn {
+      width: 100%;
+      text-align: left;
+      background-color: #fff;
+      border: 2px solid var(--border-color);
+      border-radius: 6px;
+      padding: 12px 15px;
+      cursor: pointer;
+      font-size: 0.98em;
+      transition: all 0.2s ease;
+      color: var(--text-color);
+    }
+
+    .option-btn:hover {
+      border-color: var(--primary-color);
+      background-color: #f8fafc;
+    }
+
+    .option-btn.selected-correct {
+      background-color: var(--correct-bg) !important;
+      border-color: var(--correct-border) !important;
+      color: var(--correct-text) !important;
+      font-weight: bold;
+    }
+
+    .option-btn.selected-incorrect {
+      background-color: var(--incorrect-bg) !important;
+      border-color: var(--incorrect-border) !important;
+      color: var(--incorrect-text) !important;
+    }
+
+    .explanation {
+      display: none;
+      margin-top: 15px;
+      padding: 12px 15px;
+      border-radius: 6px;
+      font-size: 0.9em;
+      background-color: #e9ecef;
+      border-left: 4px solid var(--primary-color);
+    }
+
+    .explanation.show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Chapter 20: Spreadsheets (Excel) — Theory Paper Prep</h1>
+      <p class="subtitle">Cambridge IGCSE ICT — Data Modelling, Cell Referencing, Functions, Lookups, Validation & Charting (60 MCQs)</p>
+      <div class="controls">
+        <div class="score-board">Score: <span id="score">0</span> / 60</div>
+        <button class="btn-action" onclick="shuffleAllAnswers()">🔀 Swap / Shuffle Answers</button>
+        <button class="btn-action btn-reset" onclick="initQuiz()">🔄 Reset & Reshuffle</button>
+      </div>
+    </header>
+
+    <div id="quiz-container"></div>
+  </div>
+
+  <script>
+    const originalQuizData = [
+      // Section 1: Spreadsheet Structure & Data Modelling Basics
+      {
+        q: "1. What is the primary purpose of using a spreadsheet as a data model in ICT theory?",
+        options: [
+          "To simulate real-life financial or mathematical scenarios and answer 'What-If?' questions",
+          "To store relational tables with millions of linked customer records",
+          "To edit high-resolution raster photographs using layers",
+          "To compile HTML and CSS web pages for online hosting"
+        ],
+        answerText: "To simulate real-life financial or mathematical scenarios and answer 'What-If?' questions",
+        exp: "Spreadsheets act as mathematical models where changing input variables automatically recalculates outputs to test scenarios."
+      },
+      {
+        q: "2. In spreadsheet terminology, what is a 'cell'?",
+        options: [
+          "The single rectangular intersection of a specific column and row identified by a cell reference (e.g., B4)",
+          "An entire vertical group of numbers identified by a letter",
+          "A standalone Excel workbook file saved on disk",
+          "A visual pie chart embedded onto a worksheet"
+        ],
+        answerText: "The single rectangular intersection of a specific column and row identified by a cell reference (e.g., B4)",
+        exp: "A cell is the basic storage unit in a worksheet, named by its column letter followed by its row number."
+      },
+      {
+        q: "3. What is the difference between a 'formula' and a 'function' in Excel?",
+        options: [
+          "A formula is any user-defined calculation starting with '=', whereas a function is a built-in named operation like SUM or AVERAGE",
+          "A formula only works on text, whereas a function only works on dates",
+          "A formula does not start with '=', whereas a function always starts with '#'",
+          "There is no difference; Excel refuses to run formulas without functions"
+        ],
+        answerText: "A formula is any user-defined calculation starting with '=', whereas a function is a built-in named operation like SUM or AVERAGE",
+        exp: "All expressions begin with '=', such as =A1+A2 (formula), while =SUM(A1:A2) invokes a predefined built-in function."
+      },
+      {
+        q: "4. Which symbol must always be typed first when entering a formula or function into a spreadsheet cell?",
+        options: [
+          "= (Equals sign)",
+          "@ (At symbol)",
+          "# (Hash sign)",
+          "$ (Dollar sign)"
+        ],
+        answerText: "= (Equals sign)",
+        exp: "Starting an entry with '=' tells the spreadsheet software to evaluate the expression rather than treat it as plain text."
+      },
+      {
+        q: "5. What does a contiguous cell range written as B3:E10 represent?",
+        options: [
+          "All cells in the rectangular block starting at top-left B3 and ending at bottom-right E10",
+          "Only the two individual cells B3 and E10",
+          "Cell B3 divided by cell E10",
+          "All cells outside the range B3 to E10"
+        ],
+        answerText: "All cells in the rectangular block starting at top-left B3 and ending at bottom-right E10",
+        exp: "The colon (:) operator defines an inclusive rectangular block between two corner cell references."
+      },
+      {
+        q: "6. What error message is displayed when a formula attempts to divide a number by zero or an empty cell?",
+        options: [
+          "#DIV/0!",
+          "#VALUE!",
+          "#NAME?",
+          "#REF!"
+        ],
+        answerText: "#DIV/0!",
+        exp: "#DIV/0! occurs whenever the denominator of a division expression evaluates to 0 or blank."
+      },
+      {
+        q: "7. What does a row of hash symbols (#######) displayed inside a cell indicate?",
+        options: [
+          "The column width is too narrow to display the formatted numeric or date value",
+          "The formula contains a syntax spelling error",
+          "The cell reference has been deleted",
+          "The spreadsheet file is password-protected"
+        ],
+        answerText: "The column width is too narrow to display the formatted numeric or date value",
+        exp: "####### is a formatting display warning (not a formula error) resolved by widening the column."
+      },
+      {
+        q: "8. What causes the #NAME? error in a spreadsheet cell?",
+        options: [
+          "Excel does not recognize text in a formula, such as a misspelled function name (e.g., =AVARAGE(A1:A5)) or unquoted text",
+          "A number is divided by zero",
+          "A column is too narrow to show a currency value",
+          "A circular reference loop has been created"
+        ],
+        answerText: "Excel does not recognize text in a formula, such as a misspelled function name (e.g., =AVARAGE(A1:A5)) or unquoted text",
+        exp: "#NAME? appears when Excel encounters an undefined function identifier or unquoted string literal."
+      },
+      {
+        q: "9. What causes the #REF! error in a worksheet?",
+        options: [
+          "A formula points to a cell or range that has been deleted or overwritten",
+          "A formula multiplies a number by a word",
+          "A function has too few decimal places",
+          "The workbook has not been saved yet"
+        ],
+        answerText: "A formula points to a cell or range that has been deleted or overwritten",
+        exp: "#REF! stands for invalid cell reference, typically triggered when referenced rows or columns are removed."
+      },
+      {
+        q: "10. What causes the #VALUE! error in Excel?",
+        options: [
+          "Using the wrong type of argument or operand, such as trying to add a text string to a number (=A1+\"Hello\")",
+          "Dividing a positive integer by zero",
+          "Referencing a deleted worksheet tab",
+          "Typing a date in DD/MM/YYYY format"
+        ],
+        answerText: "Using the wrong type of argument or operand, such as trying to add a text string to a number (=A1+\"Hello\")",
+        exp: "#VALUE! occurs when mathematical operators receive incompatible data types like text strings."
+      },
+
+      // Section 2: Cell Referencing & Named Ranges
+      {
+        q: "11. What happens to a relative cell reference (e.g., =B2*C2) when it is replicated (copied) down one row?",
+        options: [
+          "It automatically adjusts relative to its new position to become =B3*C3",
+          "It remains locked as =B2*C2",
+          "It converts into an absolute reference =$B$2*$C$2",
+          "It produces a #REF! error"
+        ],
+        answerText: "It automatically adjusts relative to its new position to become =B3*C3",
+        exp: "Relative references shift their row/column coordinates dynamically when replicated across cells."
+      },
+      {
+        q: "12. Why is an absolute cell reference (e.g., $B$1) used in a spreadsheet formula?",
+        options: [
+          "To keep the reference fixed to a specific cell (such as a single VAT rate) when the formula is replicated across multiple rows or columns",
+          "To hide the formula from appearing in the Formula Bar",
+          "To force the result to always be a positive integer",
+          "To convert text labels into numeric values"
+        ],
+        answerText: "To keep the reference fixed to a specific cell (such as a single VAT rate) when the formula is replicated across multiple rows or columns",
+        exp: "Dollar signs ($) lock both the column and row coordinates so replication does not shift the target cell."
+      },
+      {
+        q: "13. What does the mixed cell reference $A5 do when replicated across columns and rows?",
+        options: [
+          "Locks column A so it never changes, while allowing row 5 to adjust dynamically when copied down",
+          "Locks row 5 so it never changes, while allowing column A to adjust dynamically",
+          "Locks both column A and row 5 permanently",
+          "Multiplies cell A5 by the currency symbol"
+        ],
+        answerText: "Locks column A so it never changes, while allowing row 5 to adjust dynamically when copied down",
+        exp: "In $A5, '$' precedes only the column letter, making the column absolute and the row relative."
+      },
+      {
+        q: "14. What does the mixed cell reference B$10 do when replicated?",
+        options: [
+          "Locks row 10 while allowing column B to change when copied horizontally across columns",
+          "Locks column B while allowing row 10 to change",
+          "Locks both column B and row 10",
+          "Rounds the value in B10 to 10 decimal places"
+        ],
+        answerText: "Locks row 10 while allowing column B to change when copied horizontally across columns",
+        exp: "Because '$' precedes only 10, the row stays fixed while the column adjusts relatively."
+      },
+      {
+        q: "15. What is a 'Named Range' in Excel and why is it useful in theory exams?",
+        options: [
+          "Assigning a descriptive label (e.g., Tax_Rate) to a cell or range, making formulas easier to read and acting like an absolute reference",
+          "Renaming the entire Excel file on the desktop",
+          "Changing column letters A, B, C into words",
+          "Adding a title above a bar chart"
+        ],
+        answerText: "Assigning a descriptive label (e.g., Tax_Rate) to a cell or range, making formulas easier to read and acting like an absolute reference",
+        exp: "Named ranges improve formula readability (e.g., =Price*Tax_Rate) and stay fixed during replication."
+      },
+      {
+        q: "16. What is a 'circular reference' in a spreadsheet?",
+        options: [
+          "When a formula refers back to its own cell, either directly or indirectly through a chain of formulas",
+          "When a pie chart is drawn inside a worksheet",
+          "When a range wraps from column Z back to column A",
+          "When a VLOOKUP searches a sorted table"
+        ],
+        answerText: "When a formula refers back to its own cell, either directly or indirectly through a chain of formulas",
+        exp: "For example, typing =SUM(A1:A5) inside cell A5 creates an endless calculation loop called a circular reference."
+      },
+
+      // Section 3: Core Arithmetic & Statistical Functions
+      {
+        q: "17. What does the function =SUM(B2:B8) calculate?",
+        options: [
+          "The total sum of all numeric values in cells B2 through B8 inclusive",
+          "The arithmetic mean of cells B2 through B8",
+          "The total count of non-empty cells in B2:B8",
+          "The largest single number in B2:B8"
+        ],
+        answerText: "The total sum of all numeric values in cells B2 through B8 inclusive",
+        exp: "SUM adds together all numerical entries within the specified range."
+      },
+      {
+        q: "18. How does =AVERAGE(C1:C10) treat an empty (blank) cell inside the range C1:C10?",
+        options: [
+          "It ignores the blank cell completely and divides the sum only by the count of cells containing numbers",
+          "It treats the blank cell as a zero (0) and includes it in the denominator count",
+          "It returns a #DIV/0! error immediately",
+          "It returns a #VALUE! error"
+        ],
+        answerText: "It ignores the blank cell completely and divides the sum only by the count of cells containing numbers",
+        exp: "AVERAGE ignores blank cells and text strings, whereas a cell explicitly containing 0 is included in the average."
+      },
+      {
+        q: "19. What is the difference between =COUNT(A1:A10) and =COUNTA(A1:A10)?",
+        options: [
+          "COUNT counts only cells containing numbers, whereas COUNTA counts all non-empty cells (numbers, text, dates, errors)",
+          "COUNT counts text cells, whereas COUNTA counts blank cells",
+          "COUNT adds values together, whereas COUNTA multiplies them",
+          "There is no difference; both return identical results on all datasets"
+        ],
+        answerText: "COUNT counts only cells containing numbers, whereas COUNTA counts all non-empty cells (numbers, text, dates, errors)",
+        exp: "COUNT is strictly numeric; COUNTA ('Count All') counts every cell that is not blank."
+      },
+      {
+        q: "20. Which function counts how many cells within a range are completely empty (blank)?",
+        options: [
+          "=COUNTBLANK(range)",
+          "=COUNTEMPTY(range)",
+          "=COUNTA(range)",
+          "=ISNULL(range)"
+        ],
+        answerText: "=COUNTBLANK(range)",
+        exp: "COUNTBLANK returns the exact count of empty cells in a given range."
+      },
+      {
+        q: "21. What does =MAX(D2:D50) return?",
+        options: [
+          "The highest (largest) numeric value found in the range D2:D50",
+          "The sum of the top two numbers in D2:D50",
+          "The total number of rows in the sheet",
+          "The middle (median) value in D2:D50"
+        ],
+        answerText: "The highest (largest) numeric value found in the range D2:D50",
+        exp: "MAX identifies the maximum numerical value in a range; MIN identifies the smallest."
+      },
+      {
+        q: "22. What is the difference between =INT(14.89) and =ROUND(14.89, 0)?",
+        options: [
+          "=INT(14.89) truncates the decimal part to return 14, whereas =ROUND(14.89, 0) rounds to the nearest whole number returning 15",
+          "=INT(14.89) returns 15, whereas =ROUND(14.89, 0) returns 14",
+          "Both functions return 14.9",
+          "=INT only works on negative numbers"
+        ],
+        answerText: "=INT(14.89) truncates the decimal part to return 14, whereas =ROUND(14.89, 0) rounds to the nearest whole number returning 15",
+        exp: "INT rounds down to the nearest integer (chopping off decimals for positive numbers), while ROUND applies standard rounding rules."
+      },
+      {
+        q: "23. Why is using the =ROUND(A1*B1, 2) function better than simply formatting a cell to 2 decimal places?",
+        options: [
+          "ROUND changes the actual underlying stored value to 2 decimal places, preventing hidden rounding discrepancies in later totals",
+          "Formatting to 2 decimal places deletes all digits after the decimal point permanently",
+          "ROUND turns the cell value into a text label",
+          "Formatting cannot be applied to currency values"
+        ],
+        answerText: "ROUND changes the actual underlying stored value to 2 decimal places, preventing hidden rounding discrepancies in later totals",
+        exp: "Visual formatting only changes display appearance; underlying unrounded decimals still affect subsequent SUM calculations unless ROUND is used."
+      },
+      {
+        q: "24. What does the formula =ROUND(345.678, -1) evaluate to?",
+        options: [
+          "350",
+          "345.7",
+          "300",
+          "345.68"
+        ],
+        answerText: "350",
+        exp: "A negative num_digits argument (-1) rounds to the nearest 10; 345.678 rounds up to 350."
+      },
+
+      // Section 4: Conditional & Logical Functions (IF, Nested IF, COUNTIF, SUMIF, AND, OR)
+      {
+        q: "25. In the function =IF(B2>=50, \"Pass\", \"Fail\"), what are the three arguments in order?",
+        options: [
+          "Logical_test, Value_if_true, Value_if_false",
+          "Value_if_true, Logical_test, Value_if_false",
+          "Range, Criteria, Sum_range",
+          "Lookup_value, Table_array, Col_index_num"
+        ],
+        answerText: "Logical_test, Value_if_true, Value_if_false",
+        exp: "An IF function evaluates a condition first, returning the second argument if TRUE and the third argument if FALSE."
+      },
+      {
+        q: "26. What is a 'Nested IF' function?",
+        options: [
+          "An IF function placed inside another IF function's true or false branch to test multiple conditions (e.g., Grade A, B, or C)",
+          "An IF function copied across 10 different worksheets",
+          "An IF function that only compares dates",
+          "An IF function combined with a pie chart"
+        ],
+        answerText: "An IF function placed inside another IF function's true or false branch to test multiple conditions (e.g., Grade A, B, or C)",
+        exp: "Nesting IF statements allows multi-way branching when more than two outcomes are required."
+      },
+      {
+        q: "27. What does the formula =COUNTIF(B2:B20, \">100\") do?",
+        options: [
+          "Counts how many cells in the range B2:B20 contain a value strictly greater than 100",
+          "Adds together all numbers in B2:B20 that are greater than 100",
+          "Returns TRUE if all cells in B2:B20 are greater than 100",
+          "Deletes any cell in B2:B20 smaller than 100"
+        ],
+        answerText: "Counts how many cells in the range B2:B20 contain a value strictly greater than 100",
+        exp: "COUNTIF counts the number of cells within a range that satisfy a single criterion."
+      },
+      {
+        q: "28. What are the three arguments of the =SUMIF(range, criteria, sum_range) function?",
+        options: [
+          "The range to evaluate against the criteria, the condition itself, and the corresponding cells to add together",
+          "The first cell, the last cell, and the number of decimal places",
+          "The lookup value, the table array, and the row index",
+          "The logical test, value if true, and value if false"
+        ],
+        answerText: "The range to evaluate against the criteria, the condition itself, and the corresponding cells to add together",
+        exp: "SUMIF checks 'range' for 'criteria' and sums the matching entries from 'sum_range'."
+      },
+      {
+        q: "29. Which formula correctly calculates the total sales in C2:C15 only for rows where the Region in A2:A15 is \"North\"?",
+        options: [
+          "=SUMIF(A2:A15, \"North\", C2:C15)",
+          "=COUNTIF(A2:A15, \"North\", C2:C15)",
+          "=SUMIF(C2:C15, \"North\", A2:A15)",
+          "=IF(A2:A15=\"North\", SUM(C2:C15))"
+        ],
+        answerText: "=SUMIF(A2:A15, \"North\", C2:C15)",
+        exp: "The criteria range (A2:A15) comes first, the condition (\"North\") second, and the values to sum (C2:C15) third."
+      },
+      {
+        q: "30. What does =COUNTIFS(A2:A20, \"IT\", B2:B20, \">=80\") calculate?",
+        options: [
+          "The number of rows where column A is \"IT\" AND column B is 80 or higher",
+          "The number of rows where column A is \"IT\" OR column B is 80 or higher",
+          "The sum of scores in B2:B20 for the IT department",
+          "The average score of students in the IT department"
+        ],
+        answerText: "The number of rows where column A is \"IT\" AND column B is 80 or higher",
+        exp: "COUNTIFS applies multiple criteria across multiple ranges using logical AND."
+      },
+      {
+        q: "31. What does =AVERAGEIF(A2:A10, \"Female\", C2:C10) calculate?",
+        options: [
+          "The arithmetic mean of values in C2:C10 only for rows where A2:A10 equals \"Female\"",
+          "The total count of \"Female\" entries in A2:A10",
+          "The sum of all values in C2:C10",
+          "The highest value in C2:C10 for \"Female\""
+        ],
+        answerText: "The arithmetic mean of values in C2:C10 only for rows where A2:A10 equals \"Female\"",
+        exp: "AVERAGEIF computes the average of cells in the average_range that meet the specified condition."
+      },
+      {
+        q: "32. In the formula =IF(AND(B2>=50, C2>=50), \"Pass\", \"Retake\"), when will \"Pass\" be returned?",
+        options: [
+          "Only when BOTH B2 is at least 50 AND C2 is at least 50",
+          "Whenever EITHER B2 is at least 50 OR C2 is at least 50",
+          "When both B2 and C2 are less than 50",
+          "Never, because AND cannot be used inside IF"
+        ],
+        answerText: "Only when BOTH B2 is at least 50 AND C2 is at least 50",
+        exp: "The AND function returns TRUE only if every single condition inside it evaluates to TRUE."
+      },
+      {
+        q: "33. In the formula =IF(OR(D2=\"Gold\", E2>1000), \"Free Shipping\", \"Standard Fee\"), when is \"Free Shipping\" awarded?",
+        options: [
+          "When D2 is \"Gold\", OR E2 is greater than 1000, OR both conditions are true",
+          "Only when D2 is \"Gold\" AND E2 is greater than 1000 simultaneously",
+          "Only when neither condition is true",
+          "Only when E2 is equal to 1000"
+        ],
+        answerText: "When D2 is \"Gold\", OR E2 is greater than 1000, OR both conditions are true",
+        exp: "The OR function returns TRUE if at least one of its logical arguments is TRUE."
+      },
+
+      // Section 5: Lookup Functions (VLOOKUP, HLOOKUP, XLOOKUP)
+      {
+        q: "34. What is the primary difference between VLOOKUP and HLOOKUP?",
+        options: [
+          "VLOOKUP searches vertically down the first column of a table, whereas HLOOKUP searches horizontally across the top row",
+          "VLOOKUP only searches text, whereas HLOOKUP only searches numbers",
+          "VLOOKUP works on one sheet, whereas HLOOKUP works across different files",
+          "VLOOKUP requires unsorted data, whereas HLOOKUP cannot use exact matches"
+        ],
+        answerText: "VLOOKUP searches vertically down the first column of a table, whereas HLOOKUP searches horizontally across the top row",
+        exp: "'V' stands for Vertical (column-oriented lookup table) and 'H' stands for Horizontal (row-oriented lookup table)."
+      },
+      {
+        q: "35. In =VLOOKUP(A2, $F$2:$H$12, 3, FALSE), what does the number 3 represent?",
+        options: [
+          "The column index number within the table array ($F$2:$H$12) from which to return the matching value (column H)",
+          "The third row of the worksheet",
+          "That the lookup value must be rounded to 3 decimal places",
+          "That Excel should return the 3rd duplicate match found"
+        ],
+        answerText: "The column index number within the table array ($F$2:$H$12) from which to return the matching value (column H)",
+        exp: "In $F$2:$H$12, column F is 1, G is 2, and H is 3."
+      },
+      {
+        q: "36. What does setting the 4th argument of VLOOKUP to FALSE (or 0) specify?",
+        options: [
+          "Find an exact match only; return #N/A if no exact match exists",
+          "Find an approximate match assuming the first column is sorted ascending",
+          "Hide the lookup result from printing",
+          "Search from right to left instead of left to right"
+        ],
+        answerText: "Find an exact match only; return #N/A if no exact match exists",
+        exp: "FALSE enforces exact matching (e.g., matching exact Product IDs), preventing erroneous approximate matches."
+      },
+      {
+        q: "37. When using VLOOKUP with approximate match (TRUE or omitted), what crucial rule must the lookup table follow?",
+        options: [
+          "The first column of the table array must be sorted in ascending order",
+          "The first column must be sorted in descending order",
+          "All values in the table must be text strings",
+          "The table must contain no more than 5 rows"
+        ],
+        answerText: "The first column of the table array must be sorted in ascending order",
+        exp: "Approximate match binary search requires the key column to be sorted ascending (smallest to largest) to work accurately."
+      },
+      {
+        q: "38. Why should the table_array argument in a VLOOKUP formula (e.g., $F$2:$H$12) almost always use absolute cell references?",
+        options: [
+          "So the lookup table boundaries do not shift out of place when the VLOOKUP formula is replicated down a column",
+          "Because VLOOKUP refuses to run without dollar signs",
+          "To sort the lookup table alphabetically",
+          "To convert the returned value into currency"
+        ],
+        answerText: "So the lookup table boundaries do not shift out of place when the VLOOKUP formula is replicated down a column",
+        exp: "Without absolute references, copying VLOOKUP down causes the table array to slide downward and miss top rows."
+      },
+      {
+        q: "39. What error is returned by VLOOKUP or XLOOKUP when the lookup value cannot be found in the lookup array?",
+        options: [
+          "#N/A",
+          "#DIV/0!",
+          "#NUM!",
+          "#NULL!"
+        ],
+        answerText: "#N/A",
+        exp: "#N/A ('Not Available') indicates that no matching entry was located."
+      },
+      {
+        q: "40. What is a major limitation of standard VLOOKUP that XLOOKUP overcomes?",
+        options: [
+          "VLOOKUP can only look up values to the right of the key column, whereas XLOOKUP can return values from columns to the left or right",
+          "VLOOKUP cannot search text strings",
+          "VLOOKUP only works on Apple macOS computers",
+          "VLOOKUP cannot be used with named ranges"
+        ],
+        answerText: "VLOOKUP can only look up values to the right of the key column, whereas XLOOKUP can return values from columns to the left or right",
+        exp: "XLOOKUP separates lookup_array and return_array, allowing leftward lookups and built-in custom 'if_not_found' messages."
+      },
+
+      // Section 6: Data Manipulation, Sorting, Filtering, Validation & Security
+      {
+        q: "41. When sorting a multi-column table in Excel (e.g., sorting employees by Salary), why must you select ALL columns of the table rather than just the Salary column?",
+        options: [
+          "Selecting only one column sorts that column independently, scrambling records so salaries no longer match the right employees",
+          "Excel deletes unselected columns automatically during a sort",
+          "Sorting a single column converts all numbers into text",
+          "Excel cannot sort numbers unless text columns are highlighted"
+        ],
+        answerText: "Selecting only one column sorts that column independently, scrambling records so salaries no longer match the right employees",
+        exp: "Keeping entire rows together preserves record integrity when reordering rows."
+      },
+      {
+        q: "42. What is the difference between 'Sorting' data and 'Filtering' data in a spreadsheet?",
+        options: [
+          "Sorting rearranges the order of all rows, whereas filtering temporarily hides rows that do not meet specified criteria",
+          "Sorting deletes rows permanently, whereas filtering backs them up",
+          "Sorting only works on text, whereas filtering only works on charts",
+          "There is no difference between sorting and filtering"
+        ],
+        answerText: "Sorting rearranges the order of all rows, whereas filtering temporarily hides rows that do not meet specified criteria",
+        exp: "Sorting changes row sequence without hiding records; filtering displays only matching rows while hiding non-matching ones."
+      },
+      {
+        q: "43. What is 'Conditional Formatting' in a spreadsheet?",
+        options: [
+          "Automatically changing a cell's visual appearance (fill color, font color, style) based on whether its value meets a specific rule",
+          "Password-protecting a workbook so nobody can edit formulas",
+          "Converting a spreadsheet into a PDF file",
+          "Inserting a header and footer on printed pages"
+        ],
+        answerText: "Automatically changing a cell's visual appearance (fill color, font color, style) based on whether its value meets a specific rule",
+        exp: "Conditional formatting highlights trends or exceptions visually (e.g., turning negative profit cells red)."
+      },
+      {
+        q: "44. How can 'Data Validation' be applied to a cell in Excel?",
+        options: [
+          "To restrict user input to valid criteria (such as a drop-down list or whole numbers between 1 and 10) and show an error alert if violated",
+          "To automatically spell-check all essays pasted into cells",
+          "To encrypt the spreadsheet with a 256-bit key",
+          "To compress image files inserted into the sheet"
+        ],
+        answerText: "To restrict user input to valid criteria (such as a drop-down list or whole numbers between 1 and 10) and show an error alert if violated",
+        exp: "Data validation prevents invalid or unreasonable entries at the point of data input."
+      },
+      {
+        q: "45. Why would you use 'Freeze Panes' on a large worksheet?",
+        options: [
+          "To keep top header rows or left label columns visible on screen while scrolling through large datasets",
+          "To lock formulas so users cannot modify them",
+          "To stop automatic recalculation of formulas",
+          "To prevent a chart from moving when resized"
+        ],
+        answerText: "To keep top header rows or left label columns visible on screen while scrolling through large datasets",
+        exp: "Freezing panes locks headings in view so users always know what each column or row represents while scrolling."
+      },
+      {
+        q: "46. How can a spreadsheet designer prevent users from accidentally deleting or editing complex formulas while still allowing them to type inputs into specific cells?",
+        options: [
+          "Unlock the input cells, keep formula cells locked, and turn on 'Protect Sheet' (with a password)",
+          "Change the font color of formula cells to white",
+          "Save the spreadsheet as a plain text (.txt) file",
+          "Delete the Formula Bar from Windows"
+        ],
+        answerText: "Unlock the input cells, keep formula cells locked, and turn on 'Protect Sheet' (with a password)",
+        exp: "All cells are locked by default, which takes effect once Protect Sheet is enabled; unlocking input cells lets users enter test values safely."
+      },
+      {
+        q: "47. What does pressing Ctrl + ` (grave accent) or clicking 'Show Formulas' do in Excel?",
+        options: [
+          "Switches the worksheet display to show the underlying formulas inside cells instead of their calculated results",
+          "Deletes all formulas and replaces them with static numbers",
+          "Prints the spreadsheet immediately",
+          "Creates a new blank workbook"
+        ],
+        answerText: "Switches the worksheet display to show the underlying formulas inside cells instead of their calculated results",
+        exp: "Show Formulas mode is used for auditing, debugging, and printing formula evidence in IGCSE ICT."
+      },
+      {
+        q: "48. What is 'Goal Seek' used for in spreadsheet data modelling?",
+        options: [
+          "Working backward to find the exact input value needed in one cell to achieve a desired target result in a formula cell",
+          "Searching for spelling mistakes across multiple worksheets",
+          "Sorting a list of football scores from highest to lowest",
+          "Creating a drop-down list of valid countries"
+        ],
+        answerText: "Working backward to find the exact input value needed in one cell to achieve a desired target result in a formula cell",
+        exp: "Goal Seek performs reverse 'What-If' analysis (e.g., finding what unit price yields exactly $10,000 profit)."
+      },
+
+      // Section 7: Charts, Graphs & Printing / Layout
+      {
+        q: "49. Which chart type is most appropriate for showing how parts make up a whole (percentages of a single total)?",
+        options: [
+          "Pie chart",
+          "Line graph",
+          "Scatter graph",
+          "Histogram"
+        ],
+        answerText: "Pie chart",
+        exp: "Pie charts display proportional shares of a single data series summing to 100%."
+      },
+      {
+        q: "50. Which chart type is best suited for showing continuous trends or changes over time (e.g., monthly temperature or annual sales)?",
+        options: [
+          "Line chart",
+          "Pie chart",
+          "Doughnut chart",
+          "Radar chart"
+        ],
+        answerText: "Line chart",
+        exp: "Line graphs connect data points chronologically to emphasize trends and rates of change over time."
+      },
+      {
+        q: "51. Which chart type is best for comparing discrete categories side-by-side (e.g., total rainfall across five different cities)?",
+        options: [
+          "Bar chart / Column chart",
+          "Pie chart",
+          "Area chart",
+          "Stock chart"
+        ],
+        answerText: "Bar chart / Column chart",
+        exp: "Bar and column charts use rectangular bars of proportional length to compare distinct categories."
+      },
+      {
+        q: "52. What is the purpose of a 'Legend' (Key) on a multi-series chart?",
+        options: [
+          "To identify what each color, pattern, or symbol represents in the plotted data series",
+          "To display the mathematical formula used to generate the data",
+          "To lock the chart so it cannot be moved",
+          "To set the page orientation to Landscape"
+        ],
+        answerText: "To identify what each color, pattern, or symbol represents in the plotted data series",
+        exp: "A legend maps visual colors/markers to their corresponding data series names."
+      },
+      {
+        q: "53. How do you select two non-adjacent columns (e.g., Column A 'Month' and Column D 'Profit') to create a chart?",
+        options: [
+          "Highlight Column A, hold down the Ctrl key (Cmd on Mac), and highlight Column D",
+          "Highlight Column A, hold down the Shift key, and highlight Column D",
+          "Delete Columns B and C permanently",
+          "Press Alt + F4"
+        ],
+        answerText: "Highlight Column A, hold down the Ctrl key (Cmd on Mac), and highlight Column D",
+        exp: "Holding Ctrl allows selecting non-contiguous ranges, whereas Shift selects all columns in between."
+      },
+      {
+        q: "54. Why is it important to include clear Axis Titles and a descriptive Chart Title on every graph?",
+        options: [
+          "So the viewer understands what variables and units of measurement are being displayed without guessing",
+          "Because Excel refuses to print charts without axis titles",
+          "To automatically sort the underlying spreadsheet table",
+          "To prevent #VALUE! errors in the worksheet"
+        ],
+        answerText: "So the viewer understands what variables and units of measurement are being displayed without guessing",
+        exp: "Complete labels and units (e.g., 'Revenue ($)') ensure charts are self-explanatory and accurate."
+      },
+      {
+        q: "55. What does a 'Secondary Axis' allow you to do on a combo chart?",
+        options: [
+          "Plot two data series with vastly different scales or units (e.g., Sales Volume in thousands and Profit Margin in %) on the same chart clearly",
+          "Display a second copy of the exact same pie chart",
+          "Print the chart on two separate sheets of paper",
+          "Hide the horizontal X-axis labels"
+        ],
+        answerText: "Plot two data series with vastly different scales or units (e.g., Sales Volume in thousands and Profit Margin in %) on the same chart clearly",
+        exp: "A secondary vertical axis prevents a small-scale series (like percentages) from appearing flat alongside large numbers."
+      },
+      {
+        q: "56. When preparing a wide spreadsheet with many columns for printing, which page setup options ensure it prints legibly on a single page wide?",
+        options: [
+          "Set Page Orientation to Landscape and Scaling to 'Fit All Columns on One Page'",
+          "Set Page Orientation to Portrait and zoom to 400%",
+          "Hide all gridlines and delete half the columns",
+          "Change the font size to 48pt"
+        ],
+        answerText: "Set Page Orientation to Landscape and Scaling to 'Fit All Columns on One Page'",
+        exp: "Landscape orientation widens horizontal print space, and 'Fit All Columns on One Page' prevents awkward horizontal page splits."
+      },
+      {
+        q: "57. Why are 'Gridlines' and 'Row and Column Headings' (A, B, C... 1, 2, 3...) turned on when printing formula evidence?",
+        options: [
+          "So an examiner or auditor can verify the exact cell references used inside every formula",
+          "To make the printout look more colorful",
+          "To reduce printer ink consumption",
+          "To hide header and footer text"
+        ],
+        answerText: "So an examiner or auditor can verify the exact cell references used inside every formula",
+        exp: "Without visible row numbers and column letters, it is impossible to verify whether cell references in formulas are accurate."
+      },
+      {
+        q: "58. What is the purpose of 'Print Titles' (Rows to repeat at top) in Page Setup?",
+        options: [
+          "To automatically repeat column header rows at the top of every printed page on a multi-page spreadsheet",
+          "To print the file name in the center of the page",
+          "To center the table vertically on page 1",
+          "To convert formulas into plain text before printing"
+        ],
+        answerText: "To automatically repeat column header rows at the top of every printed page on a multi-page spreadsheet",
+        exp: "Repeating header rows keeps multi-page printouts readable without flipping back to page 1."
+      },
+      {
+        q: "59. What does the =LEFT(A1, 3) text function return if cell A1 contains \"IGCSE2026\"?",
+        options: [
+          "\"IGC\"",
+          "\"026\"",
+          "\"CSE\"",
+          "3"
+        ],
+        answerText: "\"IGC\"",
+        exp: "LEFT extracts the specified number of characters starting from the leftmost character of a text string."
+      },
+      {
+        q: "60. What is a CSV (.csv) file when exporting or importing spreadsheet data?",
+        options: [
+          "A plain-text Comma Separated Values file that stores raw data values without formulas, formatting, or charts",
+          "A proprietary encrypted Excel macro workbook",
+          "A compressed video format used for tutorials",
+          "A database file containing relational links and forms"
+        ],
+        answerText: "A plain-text Comma Separated Values file that stores raw data values without formulas, formatting, or charts",
+        exp: "Saving a spreadsheet as CSV strips away formulas, colors, and charts, retaining only raw comma-delimited values."
+      }
+    ];
+
+    let currentQuizState = [];
+    let userAnswers = new Array(originalQuizData.length).fill(null);
+
+    function initQuiz() {
+      currentQuizState = originalQuizData.map((item) => {
+        const shuffledOptions = [...item.options];
+        shuffleArray(shuffledOptions);
+        return {
+          ...item,
+          shuffledOptions: shuffledOptions
+        };
+      });
+      userAnswers = new Array(originalQuizData.length).fill(null);
+      renderQuiz();
+      calculateScore();
+    }
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function renderQuiz() {
+      const container = document.getElementById('quiz-container');
+      container.innerHTML = '';
+
+      currentQuizState.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = 'mcq-card';
+        card.id = `card-${index}`;
+
+        const title = document.createElement('div');
+        title.className = 'question-title';
+        title.innerText = item.q;
+        card.appendChild(title);
+
+        const optionsList = document.createElement('div');
+        optionsList.className = 'options';
+
+        item.shuffledOptions.forEach((optText, optIdx) => {
+          const btn = document.createElement('button');
+          btn.className = 'option-btn';
+          btn.innerText = `${String.fromCharCode(65 + optIdx)}. ${optText}`;
+          
+          if (userAnswers[index] === optText) {
+            if (optText === item.answerText) {
+              btn.classList.add('selected-correct');
+            } else {
+              btn.classList.add('selected-incorrect');
+            }
+          }
+
+          btn.onclick = () => handleAnswerSelect(index, optText);
+          optionsList.appendChild(btn);
+        });
+
+        card.appendChild(optionsList);
+
+        const exp = document.createElement('div');
+        exp.className = `explanation ${userAnswers[index] !== null ? 'show' : ''}`;
+        exp.id = `exp-${index}`;
+        exp.innerText = `Explanation: ${item.exp}`;
+        card.appendChild(exp);
+
+        container.appendChild(card);
+      });
+    }
+
+    function handleAnswerSelect(questionIdx, selectedOptText) {
+      userAnswers[questionIdx] = selectedOptText;
+      const card = document.getElementById(`card-${questionIdx}`);
+      const buttons = card.querySelectorAll('.option-btn');
+      const item = currentQuizState[questionIdx];
+
+      buttons.forEach(btn => {
+        btn.classList.remove('selected-correct', 'selected-incorrect');
+        const optionContent = btn.innerText.substring(3);
+        if (optionContent === selectedOptText) {
+          if (selectedOptText === item.answerText) {
+            btn.classList.add('selected-correct');
+          } else {
+            btn.classList.add('selected-incorrect');
+          }
+        }
+      });
+
+      const expBox = document.getElementById(`exp-${questionIdx}`);
+      expBox.classList.add('show');
+
+      calculateScore();
+    }
+
+    function calculateScore() {
+      let score = 0;
+      userAnswers.forEach((ansText, idx) => {
+        if (ansText === originalQuizData[idx].answerText) {
+          score++;
+        }
+      });
+      document.getElementById('score').innerText = score;
+    }
+
+    function shuffleAllAnswers() {
+      currentQuizState.forEach((item) => {
+        shuffleArray(item.shuffledOptions);
+      });
+      renderQuiz();
+    }
+
+    window.onload = initQuiz;
+  </script>
+</body>
+</html>
